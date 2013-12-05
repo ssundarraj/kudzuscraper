@@ -6,6 +6,8 @@ array = Array.new
 headinglist = Array.new
 textlist = Array.new
 datelist = Array.new
+unamelist = Array.new
+ratinglist = Array.new
 
 agent = Mechanize.new
 page=agent.get("http://www.kudzu.com/profileReviews.do?A=60049309&pageNumber=1")
@@ -17,11 +19,19 @@ result.search("//div[@class='reviewHeading']").each do |heading|
 end
 
 result.search("//div[@style='color:#000000; font-size:12px;']").each do |text|
-	textlist.push(text.content.gsub("\n", " "))
+	textlist.push(text.content.gsub("\n", " ")[1..-2])
 end
 
 result.search("//div[@style='color:#656565; font-size:11px; width:115px;']").each do |dt|
-	datelist.push(dt.content.gsub("\n", " "))
+	datelist.push(dt.content.gsub("\n", " ")[-11..-2])
+end
+
+result.search("//div[@style='font-size:13px']").each do |uname|
+	unamelist.push(uname.content.gsub("\n", ""))
+end
+
+result.search("//div[contains(@class, 'rating-newstar')]").each do |rating|
+	ratinglist.push(rating.attr('class')[-2..-1])
 end
 
 for i in 0..headinglist.length-1
@@ -29,6 +39,8 @@ for i in 0..headinglist.length-1
 	h['title']=headinglist[i]
 	h['text']=textlist[i]
 	h['date']=datelist[i]
+	h['user']=unamelist[i]
+	h['rating']=ratinglist[i]
 	array.push(h)
 end
 
