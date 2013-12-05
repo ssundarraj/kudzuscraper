@@ -8,6 +8,7 @@ textlist = Array.new
 datelist = Array.new
 unamelist = Array.new
 ratinglist = Array.new
+piclist = Array.new
 
 agent = Mechanize.new
 page=agent.get("http://www.kudzu.com/profileReviews.do?A=60049309&pageNumber=1")
@@ -34,6 +35,10 @@ result.search("//div[contains(@class, 'rating-newstar')]").each do |rating|
 	ratinglist.push(rating.attr('class')[-2..-1])
 end
 
+result.search("//img[@width='50']").each do |pic|
+	piclist.push(pic.attr('src'))
+end
+
 for i in 0..headinglist.length-1
 	h=Hash.new
 	h['title']=headinglist[i]
@@ -41,6 +46,7 @@ for i in 0..headinglist.length-1
 	h['date']=datelist[i]
 	h['user']=unamelist[i]
 	h['rating']=ratinglist[i]
+	h['image']=piclist[i]
 	array.push(h)
 end
 
