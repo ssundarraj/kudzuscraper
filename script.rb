@@ -22,13 +22,13 @@ def kudzuscraper(uri, paginate=1)
 		textlist.push(text.content.gsub("\n", " ")[1..-2])
 	end
 	result.search("//div[@style='color:#656565; font-size:11px; width:115px;']").each do |dt|
-		datelist.push(dt.content.gsub("\n", " ")[-11..-2])
+		datelist.push(dt.content.gsub("\n", " ").split(" ")[-1])
 	end
 	result.search("//div[@style='font-size:13px']").each do |uname|
 		unamelist.push(uname.content.gsub("\n", ""))
 	end
 	result.search("//div[contains(@class, 'rating-newstar')]").each do |rating|
-		ratinglist.push(rating.attr('class')[-2..-1])
+		ratinglist.push(rating.attr('class')[-2..-1].to_i/10)
 	end
 	result.search("//img[@width='50']").each do |pic|
 		piclist.push(pic.attr('src'))
