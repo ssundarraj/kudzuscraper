@@ -54,5 +54,8 @@ end
 
 if __FILE__ == $0
 	uri=ARGV.first
-	puts kudzuscraper(uri)
+	op=kudzuscraper(uri)
+	target=File.open("output.html.erb", 'w')
+	target.write(op)
+	puts op
 end
